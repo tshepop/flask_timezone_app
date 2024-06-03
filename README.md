@@ -9,17 +9,23 @@ The website is created with Python3, flask, bootstrap5, arrow package. The html 
 To install packages and run the website in your local device(laptop, desktop)
 
 - Create a virtual environment
+
 ```$ python3 -m venv venv```
 
 - Activate the virtual environment
+
 ```$ source venv\bin\activate```
 
 - Install required packages
+
 ```$ python3 install -r requirements.txt```
 
 - Start local server
+
 ```$ flask run```
+
    or
-```$ python3 -m flask --app `*name of app*` run```
+
+```$ python3 -m flask --app [name of app] run```
 
 
