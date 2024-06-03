@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cities Date and Time</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+
+</head>
+
+<body>
+    <!-- Get rid of Flash Of Unstyled Content(FOUC) in firefox -->
+    <script>0</script>
+
+    <div class="container">
+        <h1 class="display-1 font-monospace mb-3">Your City Date and Time</h1>
+        <form action="{{ url_for('index') }}" method="post" class="row">
+            <div class="col-4">
+                <select class="form-select form-select-lg mb-3" name="city_zone" aria-label=".form-select-sm">
+                    <option values="" selected>Choose timezone...</option>
+                    {% for city_name in data.zones %}
+                    <option value="{{ city_name }}">{{ city_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-info btn-lg text-white">Get Info</button>
+            </div>
+        </form>
+        <hr>
+        <div class="">
+            {% if data.name_zone.split("/") | length > 2 %}
+            <p class="fs-4"><span class="fw-bold">Your City:</span> {{ data.name_zone.split("/")[2] }}</p>
+            {% else %}
+            <p class="fs-4"><span class="fw-bold">City:</span> {{ data.name_zone.split("/")[1] }}</p>
+            {% endif %}
+
+            <p class="fs-4"><span class="fw-bold">Time:</span> {{ current_time.format("HH:mm:ss") }}</p>
+            <p class="fs-4"><span class="fw-bold">Date:</span> {{ current_time.format("dddd, MMMM DD, YYYY") }}</p>
+            <p class="fs-4"><span class="fw-bold">From GMT/UTC:</span> {{ current_time.format("ZZ")}}</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
