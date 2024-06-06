@@ -5,6 +5,26 @@ import arrow
 app = Flask(__name__)
 
 
+def create_timezone_list():
+    """Get timezones from a csv file, store and return list."""
+
+    zones = []
+
+    # get data from a file
+    with open("time_zone.csv") as f:
+        reader = csv.reader(f)
+        header_row = next(reader)
+
+        for idx, row in enumerate(header_row):
+            pass
+        #     print(idx, row)
+
+        for row in reader:
+            zones.append(row[0])
+
+    return zones
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     zones = []
