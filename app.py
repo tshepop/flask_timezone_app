@@ -1,5 +1,5 @@
 import csv
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for, flash
 import arrow
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ def create_timezone_list():
 
         for idx, row in enumerate(header_row):
             pass
-        #     print(idx, row)
+        #   print(idx, row)
 
         for row in reader:
             zones.append(row[0])
@@ -27,37 +27,25 @@ def create_timezone_list():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    zones = []
-
-    # get data from csv file
-    with open("time_zone.csv") as f:
-        reader = csv.reader(f)
-        header_row = next(reader)
-
-        for idx, row in enumerate(header_row):
-            # print(idx, row)
-            pass
-
-        for row in reader:
-            zones.append(row[0])
+    zone_data = create_timezone_list()
 
     # get form data
+    zone_name = request.form.get("city_zone")
+    current_time = arrow.now(tz=zone_name)
+
     if request.method == "POST":
-        get_selected_zone = request.form.get("city_zone")
+        if not zone_name or not current_time:
+            flash("Make a Valid Selection!")
+            redirect(url_for("index"))
 
-    # Context - dictionary to populate the form select element
-    # and pass the data to the template
-    data = {
-        "zones": zones,
-        "name_zone": get_selected_zone,
-    }
-
-    # use the arrow package to get date and time
-    current_time = arrow.now(tz=get_selected_zone)
+    # create a list and extract city name
+    city = zone_name.split("/")
 
     return render_template("index.html",
                            current_time=current_time,
-                           data=data)
+                           zone_data=zone_data,
+                           zone_name=zone_name,
+                           city=city)
 
 
 if __name__ == "__main__":
