@@ -15,6 +15,13 @@
     <script>0</script>
 
     <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show mt-4" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
         <h1 class="display-1 font-monospace mb-3">Your City Date and Time</h1>
         <form action="{{ url_for('index') }}" method="post" class="row">
             <div class="col-4">
