@@ -1,8 +1,10 @@
 import csv
 from flask import Flask, request, render_template, redirect, url_for, flash
 import arrow
+import config
 
 app = Flask(__name__)
+app.secret_key = config.SECRET_KEY
 
 
 def create_timezone_list():
