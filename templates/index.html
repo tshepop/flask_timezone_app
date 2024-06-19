@@ -20,7 +20,7 @@
             <div class="col-4">
                 <select class="form-select form-select-lg mb-3" name="city_zone" aria-label=".form-select-sm">
                     <option values="" selected>Choose timezone...</option>
-                    {% for city_name in data.zones %}
+                    {% for city_name in zone_data %}
                     <option value="{{ city_name }}">{{ city_name }}</option>
                     {% endfor %}
                 </select>
@@ -31,10 +31,10 @@
         </form>
         <hr>
         <div class="">
-            {% if data.name_zone.split("/") | length > 2 %}
-            <p class="fs-4"><span class="fw-bold">Your City:</span> {{ data.name_zone.split("/")[2] }}</p>
+            {% if city | length > 2 %}
+            <p class="fs-4"><span class="fw-bold">City:</span> {{ city[2] }}</p>
             {% else %}
-            <p class="fs-4"><span class="fw-bold">City:</span> {{ data.name_zone.split("/")[1] }}</p>
+            <p class="fs-4"><span class="fw-bold">City:</span> {{ city[1] }}</p>
             {% endif %}
 
             <p class="fs-4"><span class="fw-bold">Time:</span> {{ current_time.format("HH:mm:ss") }}</p>
