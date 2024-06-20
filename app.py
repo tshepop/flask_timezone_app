@@ -41,7 +41,7 @@ def index():
             redirect(url_for("index"))
 
     # create a list and extract city name
-    city = zone_name.split("/")
+    city = str(zone_name).split("/")
 
     return render_template("index.html",
                            current_time=current_time,
