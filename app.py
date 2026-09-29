@@ -7,24 +7,28 @@ app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
 
 
-def create_timezone_list():
+def create_timezone_list(filepath="time_zone.csv"):
     """Get timezones from a csv file, store and return list."""
 
     zones = []
 
-    # get data from a file
-    with open("time_zone.csv") as f:
-        reader = csv.reader(f)
-        header_row = next(reader)
-
-        for idx, row in enumerate(header_row):
-            pass
-        #   print(idx, row)
+    try:
+        # get data from a file
+        with open(filepath, "r") as f:
+            reader = csv.reader(f)
+            next(reader, None)
 
         for row in reader:
-            zones.append(row[0])
+            if row:
+                zones.append(row[0].strip())
+    except FileNotFoundError:
+        print(f"{filepath} not found. Check correct path.")
 
     return zones
+
+
+# load timezones into memory, to reduce server resources
+TIMEZONE_DATA = create_timezone_list()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -43,11 +47,13 @@ def index():
     # create a list and extract city name
     city = str(zone_name).split("/")
 
-    return render_template("index.html",
-                           current_time=current_time,
-                           zone_data=zone_data,
-                           zone_name=zone_name,
-                           city=city)
+    return render_template(
+        "index.html",
+        current_time=current_time,
+        zone_data=zone_data,
+        zone_name=zone_name,
+        city=city,
+    )
 
 
 if __name__ == "__main__":
