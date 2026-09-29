@@ -18,9 +18,9 @@ def create_timezone_list(filepath="time_zone.csv"):
             reader = csv.reader(f)
             next(reader, None)
 
-        for row in reader:
-            if row:
-                zones.append(row[0].strip())
+            for row in reader:
+                if row:
+                    zones.append(row[0].strip())
     except FileNotFoundError:
         print(f"{filepath} not found. Check correct path.")
 
