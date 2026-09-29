@@ -33,26 +33,31 @@ TIMEZONE_DATA = create_timezone_list()
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    zone_data = create_timezone_list()
 
     # get form data
-    zone_name = request.form.get("city_zone")
-    current_time = arrow.now(tz=zone_name)
+    zone_name = request.args.get("city_zone")
+    current_time = None
+    city_name = None
 
-    if request.method == "POST":
-        if not zone_name or not current_time:
-            flash("Make a Valid Selection!")
-            redirect(url_for("index"))
+    if zone_name:
+        try:
+            # fetch time for selected timezone
+            current_time = arrow.now(tz=zone_name)
 
-    # create a list and extract city name
-    city = str(zone_name).split("/")
+            # format timezone e.g. America/New_York -> New York
+            edit_timezone = zone_name.split("/")[-1]
+            city_name = edit_timezone.replace("_", " ")
+
+        except Exception:
+            flash("Button clicked. Select a valid timezone first.")
+            return redirect(url_for("index"))
 
     return render_template(
         "index.html",
-        current_time=current_time,
-        zone_data=zone_data,
+        zone_data=TIMEZONE_DATA,
         zone_name=zone_name,
-        city=city,
+        current_time=current_time,
+        city=city_name,
     )
 
 
